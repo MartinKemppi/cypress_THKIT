@@ -3,17 +3,20 @@ describe('Automate collecting product links from the campaign page', () => {
     const productsToSelect = 10;
     const productLinks = [];
     const SHORT_WAIT = 2000;
+    const max = 40;
 
     beforeEach(() => {
         cy.viewport(1920, 1080);
     });
 
-    it('Clicks on product images to collect links', () => {
+    it('Clicks on random product images to collect links', () => {
         cy.visit(campaignUrl);
         cy.wait(SHORT_WAIT);
 
         for (let i = 1; i <= productsToSelect; i++) {
-            cy.get(`:nth-child(${i}) > .catalogue-product-link > .catalogue-product > ._image-wrapper > img`)
+            const randomIndex = Math.floor(Math.random() * max) + 1;
+
+            cy.get(`:nth-child(${randomIndex}) > .catalogue-product-link > .catalogue-product > ._image-wrapper > img`)
                 .click();
 
             cy.url().then(currentUrl => {
@@ -34,7 +37,7 @@ describe('Automate collecting product links from the campaign page', () => {
 
         cy.visit('https://arvutitark.ee/ostukorv');
         cy.wait(10000);
-        
+
         cy.contains('Ostan külalisena').click();
 
         cy.wait(5000);
